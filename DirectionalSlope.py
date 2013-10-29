@@ -5,8 +5,8 @@
  Calculates directional slope
                               -------------------
         begin                : 2011-10-25
-        version              : 2012-09-09 (1.1)
-        copyright            : (C) 2011-2012 by Mauro Alberti - www.malg.eu
+        version              : 2013-10-24 (1.2.0), QGIS 2.0 compatible
+        copyright            : (C) 2011-2013 by Mauro Alberti - www.malg.eu
         email                : alberti.m65@gmail.com
  ***************************************************************************/
 
@@ -54,7 +54,7 @@ class DirectionalSlope:
             "DirectionalSlope", self.iface.mainWindow())
         
         # connect the action to the run method
-        QObject.connect(self.action, SIGNAL("triggered()"), self.run)
+        self.action.triggered.connect( self.run )
 
         # Add toolbar button and menu item
         self.iface.addToolBarIcon(self.action)

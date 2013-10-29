@@ -1,10 +1,18 @@
 [general]
 name=DirectionalSlope
-description=Calculates the directional slope along given and variable orientations
-version=1.1.1
-qgisMinimumVersion=1.8
-email=alberti.m65@gmail.com
+description=Calculates directional slope along given and variable orientations
+category=Plugins
+version=1.2.0
+experimental=False
+qgisMinimumVersion=2.0
 author=Mauro Alberti
-category=Raster
+email=alberti.m65@gmail.com
+icon=./icon.png
 
+; start of optional metadata
+changelog=
+    1.2.0: version compatible with QGis 2.0
+
+; tags are in comma separated value format, spaces are allowed
+tags=directional slope,dem,geomorphology
 

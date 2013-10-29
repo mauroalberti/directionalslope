@@ -17,15 +17,11 @@ class DirectionalSlopeDialog( QDialog ):
         self.initialize() 
                 
         self.setupUI()
-        
-        # self.linkQGIS()
-        
-        # self.setConnections()   
-        
+
 
     def initialize( self ):
 
-        self.setWindowTitle( "DirectionalSlope v. 1.1.1" )
+        self.setWindowTitle( "DirectionalSlope" )
                
     
     def setupUI( self ):
@@ -48,8 +44,8 @@ class DirectionalSlopeDialog( QDialog ):
 
         self.tabWidget.setCurrentIndex(0)
 
-        QObject.connect(self.btn_ok_cancel, SIGNAL( "accepted()" ), self.accept )
-        QObject.connect(self.btn_ok_cancel, SIGNAL( "rejected()" ), self.reject )
+        self.btn_ok_cancel.accepted.connect( self.accept )
+        self.btn_ok_cancel.rejected.connect( self.reject )
 
         QMetaObject.connectSlotsByName(self)
 
@@ -138,7 +134,8 @@ class DirectionalSlopeDialog( QDialog ):
                                                       QFileDialog.ShowDirsOnly|
                                                       QFileDialog.ReadOnly )
         
-        if dirName.isEmpty(): return
+        if not dirName: 
+            return
                 
         self.ResultFolder_linedit.setText( dirName )
               
@@ -157,7 +154,7 @@ class DirectionalSlopeDialog( QDialog ):
         self.ResultFolder_QPushButton = QPushButton(self.tr("Choose directory"))
         self.Results_layout.addWidget( self.ResultFolder_QPushButton , 0, 2)
         
-        QObject.connect(self.ResultFolder_QPushButton, SIGNAL( "clicked()" ), self.setsaveDirectory )
+        self.ResultFolder_QPushButton.clicked.connect( self.setsaveDirectory )
  
         self.Results_layout.addWidget( QLabel(self.tr("Result file basename")), 1, 0)
                         
@@ -280,7 +277,7 @@ class DirectionalSlopeDialog( QDialog ):
 "</style></head><body style=\" font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Directional Slope </span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span> Vers. 1.1.1 - February, 16, 2013.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span> Vers. 1.2.0 - October, 24, 2013.</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span> Created by Mauro Alberti - </span><a href=\"mailto:alberti.m65@gmail.com\"><span style=\" text-decoration: underline; color:#0000ff;\">alberti.m65@gmail.com</span></a></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span> License: GPL vers. 3.</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p>\n"
