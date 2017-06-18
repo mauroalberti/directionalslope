@@ -9,6 +9,9 @@ The slope of a topographic surface is usually calculated as the maximum gradient
 
 This algorithm calculates the slope of a surface, both directional and steepest. Directions may be uniform or variable in space. 
 
+![alt text](/ims/directionalslope_gui.png "DirectionaSlope plugin interface")
+
+*Fig. 1. DirectionaSlope plugin interface.*
 
 ## Input
 
@@ -59,6 +62,10 @@ The output files are saved in the folder defined by the user, with the name of e
 
 The estimation of the directional slope for surfaces sampled along grids relies on the adaptation of the analytical techniques for continuous and differentiable surfaces. Usually we derive gradient by applying a 3x3 kernel to each cell (except those at the border). The figure below illustrates the adopted convention for cell indexing. 
 
+![alt text](/ims/matrix-grid_small.jpg "Kernel for slope calculation")
+
+*Fig. 2. 3x3 kernel for slope calculation.*
+
 
 To determine the directional slope, we must first calculate the directional gradients along the two principal axes, x and y. From the values of dz / dx and dz / dy, one can determine the slope of the plane that approximates the surface at the local cell (i, j) using the formula (Neteler & Mitasova, 2008, eq. A.27; see also Geospatial Analysis - a comprehensive guide):
 
@@ -83,6 +90,9 @@ Gradients along the two axes are:
 
 In the case of cells at the grid edge, this method can be replaced by the first difference method, where the central cell itself provides the missing data. 
 
+![alt text](/ims/simple_1off_small.jpg "Zevenbergen & Thorne (1987) method")
+
+*Fig. 3. Zevenbergen & Thorne (1987) method.*
 
 ### Horn (1981) method
 
@@ -95,20 +105,34 @@ Formulas of the gradients are (Burrough & McDonnell, 1998, eqs. 8.9 and 8.10):
 
 *dz/dy = [ (Elev(i - 1, j-1) + 2 Elev(i - 1, j) + Elev(i - 1, j+1)) - (Elev(i + 1, j-1) + 2 Elev(i + 1, j) + Elev(i + 1, j+1)) ] / 8 cell_size*
            
-           
+   
+![alt text](/ims/horn_small.jpg "Horn (1981) method")
+
+*Fig. 4. Horn (1981) method.*
+
+
 ## Case study
 
 Note: the sign convention for slope followed in this example refers to the previous versions of the module, inverted with respect to the current one.
 
 We derive the directional slope of a glacial surface along the ice flow directions for the Reeves Glacier (Victoria Land, East Antarctica). The ice flow data derives from a PhD thesis by D. Biscaro. 
 
+![alt text](/ims/reeves_fluxes.png "Glacial fluxes in the grounding zone of the Reeves Glacier (Antarctica)")
+
+*Fig. 5. Glacial fluxes in the grounding zone of the Reeves Glacier (Antarctica). Data D. Biscaro.*
+
 DEM data derives from the Radarsat Ramp DEM, that covers the whole of Antarctica with a nominal cell resolution of 200 m. Data were processed in Grass and then exported as ESRI Grid ASCII files. We use the Zevenbergen & Thorne (1987), since we are dealing with smooth surfaces. The results of the module were then imported in Grass and then exported into vtk format, to be visualized in Paraview. A profile of the directional slope is also presented. 
 
+![alt text](/ims/mappa_slope_ink_small.jpg "Directional slopes in the grounding zone of the Reeves Glacier (Antarctica)")
+
+*Fig. 6. Directional slopes in the grounding zone of the Reeves Glacier (Antarctica).*
 
 Results are between 5.43° upward and 19.01° downward. There is a clear distinction between two main zones. The bulk of the slope variability occurs the ice grounded area (at the left). The slopes are about 0° in the floating ice zone (at the right). The separation between the two zones corresponds to a band of slopes reaching the steepest downward values, of about 19°, and that nearly corresponds to the grounding line, were the continental ice detaches from the bedrock and begins floating in the sea. We note also in the grounded area (bottom-right) some zones were the ice flows upwards: these situations are likely linked to subglacial obstacles that constrain the ice movements upwards. 
 
 
+![alt text](/ims/profilo_small.jpg "Directional slope profile along A-B")
 
+*Fig. 7. Directional slope profile along A-B (A: left; B: right).*
 
 
 
