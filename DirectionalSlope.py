@@ -5,8 +5,8 @@
  Calculates directional slope
                               -------------------
         begin                : 2011-10-25
-        version              : 2013-10-24 (1.2.0), QGIS 2.0 compatible
-        copyright            : (C) 2011-2013 by Mauro Alberti - www.malg.eu
+        version              : 2017-06-18 (1.2.1), QGIS 2.0 compatible
+        copyright            : (C) 2011-2017 by Mauro Alberti - www.malg.eu
         email                : alberti.m65@gmail.com
  ***************************************************************************/
 
@@ -21,48 +21,45 @@
 """
 
 
-# Import the PyQt and QGIS libraries
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from qgis.core import *
 
-# Initialize Qt resources from file resources.py
 import resources
 
-# Import the code for the dialog
-from DirectionalSlope_dialog import DirectionalSlopeDialog
-
-# Import of module analysis classes
-from DirectionalSlope_classes import *
+from .DirectionalSlope_dialog import DirectionalSlopeDialog
+from .DirectionalSlope_classes import *
 
 
 class DirectionalSlope:
 
     
     def __init__(self, iface):
-        # constructor
-        
+
         # Save reference to the QGIS interface
         self.iface = iface
 
     
     def initGui(self):
-        # GUI inizialization
+        """GUI inizialization"""
         
         # Create action that will start plugin configuration
+
         self.action = QAction(QIcon(":/plugins/DirectionalSlope/icon.png"), \
             "DirectionalSlope", self.iface.mainWindow())
         
         # connect the action to the run method
+
         self.action.triggered.connect( self.run )
 
         # Add toolbar button and menu item
+
         self.iface.addToolBarIcon(self.action)
         self.iface.addPluginToMenu("DirectionalSlope", self.action)
     
     
     def unload(self):
-        # Remove the plugin menu item and icon
+        """Remove the plugin menu item and icon"""
         
         self.iface.removePluginMenu("DirectionalSlope",self.action)
         self.iface.removeToolBarIcon(self.action)
@@ -70,12 +67,12 @@ class DirectionalSlope:
 
     
     def run(self):
-        # run method 
+        """create the dialog"""
 
-        # create the dialog
         dlg = DirectionalSlopeDialog()
 
-        # append loaded raster layers to combo boxes	
+        # append loaded raster layers to combo boxes
+
         self.layermap = QgsMapLayerRegistry.instance().mapLayers() 
 
         for (name,layer) in self.layermap.iteritems():
@@ -84,12 +81,15 @@ class DirectionalSlope:
                 dlg.VariableOrientations_raster_cb.addItem(layer.name())               
   
         # show the dialog
+
         dlg.show()    
 
         # user choice
+
         result = dlg.exec_() 
  
         # process data
+
         if result == 1:
 
             # get analysis parameters from GUI
@@ -109,65 +109,83 @@ class DirectionalSlope:
             output_folder = dlg.ResultFolder_linedit.text()
             output_basename = dlg.ResultBasename_linedit.text()
             
-            
             # verify input parameters
             
             if dem_name is None or dem_name == '':
-                QMessageBox.critical(self.iface.mainWindow(), "DEM input", "No DEM defined")   
+                QMessageBox.critical(self.iface.mainWindow(),
+                                     "Input DEM",
+                                     "No DEM defined")
                 return  
 
             if (not (zt_method or h_method)):
-                QMessageBox.critical(self.iface.mainWindow(), "Slope methods", "No method defined")   
+                QMessageBox.critical(self.iface.mainWindow(),
+                                     "Slope methods",
+                                     "No method defined")
                 return 
                 
             if (not (maxslope_analysis or unifdir_analysis or vardir_analysis)):
-                QMessageBox.critical(self.iface.mainWindow(), "Slope analysis types", "No option chosen")   
+                QMessageBox.critical(self.iface.mainWindow(),
+                                     "Slope analysis types",
+                                     "No option chosen")
                 return  
 
             if unifdir_analysis and unifdir_inputtext == '':
-                QMessageBox.critical(self.iface.mainWindow(), "Slope analysis types", "No input for uniform direction analysis")   
+                QMessageBox.critical(self.iface.mainWindow(),
+                                     "Slope analysis types",
+                                     "No input for uniform direction analysis")
                 return 
                 
             if output_folder is None or output_folder == '':
-                QMessageBox.critical(self.iface.mainWindow(), "Output folder", "No output folder defined")   
+                QMessageBox.critical(self.iface.mainWindow(),
+                                     "Output folder",
+                                     "No output folder defined")
                 return                 
         
             if output_basename is None or output_basename == '':
-                QMessageBox.critical(self.iface.mainWindow(), "Output basename", "No output name defined")   
-                return                
+                QMessageBox.critical(self.iface.mainWindow(),
+                                     "Output basename",
+                                     "No output name defined")
+                return
                 
-                
-            # define DEM input file 
-            
+            # define Input DEM file
+
+            dem_layer = None
             for (name,layer) in self.layermap.iteritems():
                 if layer.name() == dem_name:       
                     dem_layer = layer
-                    break                    
+                    break
+
+            if dem_layer is None:
+                QMessageBox.critical(self.iface.mainWindow(),
+                                     "Input DEM not found",
+                                     str(e))
+                return
+
             dem_source = dem_layer.source()
-            
             
             # read DEM parameters and array data
             
             try:
                 input_grid_params, dem_array = read_raster_band(dem_source)
-            except (IOError, TypeError), e:            
-                QMessageBox.critical(self.iface.mainWindow(), "DEM input error", str(e))   
+            except (IOError, TypeError) as e:
+                QMessageBox.critical(self.iface.mainWindow(),
+                                     "Input DEM error",
+                                     str(e))
                 return
-
 
             # check geometric parameters of DEM
             
             try:
                 input_grid_params.check_params()
-            except (Raster_Parameters_Errors), e:
-                QMessageBox.critical(self.iface.mainWindow(), "DEM parameters error", str(e))   
+            except (RasterParametersErrors) as e:
+                QMessageBox.critical(self.iface.mainWindow(),
+                                     "DEM parameters error",
+                                     str(e))
                 return                
-        
-        
+
             # create DEM grid
             
-            dem_grid = create_grid(input_grid_params, dem_array)        
-
+            dem_grid = create_grid(input_grid_params, dem_array)
 
             # preprocessing for uniform direction analysis
             
@@ -176,13 +194,16 @@ class DirectionalSlope:
                 head_unifdirinput_error = 'Error in uniform direction input'
                 try:
                     unif_direction_values = get_unifdir_params(unifdir_inputtext)
-                except ValueError, e:
-                    QMessageBox.critical(self.iface.mainWindow(), head_unifdirinput_error, str(e))   
+                except ValueError as e:
+                    QMessageBox.critical(self.iface.mainWindow(),
+                                         head_unifdirinput_error,
+                                         str(e))
                     return                    
                 if len(unif_direction_values) == 0:
-                    QMessageBox.critical(self.iface.mainWindow(), head_unifdirinput_error, "Unable to read uniform direction data")   
-                    return   
- 
+                    QMessageBox.critical(self.iface.mainWindow(),
+                                         head_unifdirinput_error,
+                                         "Unable to read uniform direction data")
+                    return
  
             # preprocessing for variable direction analysis
             
@@ -190,7 +211,9 @@ class DirectionalSlope:
             if vardir_analysis:
                 # read orientation data
                 if vardirectgrid_name is None:
-                    QMessageBox.critical(self.iface.mainWindow(), "Variable directional analysis", "No raster provided")   
+                    QMessageBox.critical(self.iface.mainWindow(),
+                                         "Variable directional analysis",
+                                         "No raster provided")
                     return                   
                 for (name,layer) in self.layermap.iteritems():
                     if layer.name() == vardirectgrid_name:       
@@ -200,14 +223,18 @@ class DirectionalSlope:
                 
                 try:
                     vardir_params, vardir_array = read_raster_band(vardirectgrid_source)
-                except (IOError, TypeError), e:            
-                    QMessageBox.critical(self.iface.mainWindow(), "Direction grid input", str(e))   
+                except (IOError, TypeError) as e:
+                    QMessageBox.critical(self.iface.mainWindow(),
+                                         "Direction grid input",
+                                         str(e))
                     return 
  
                 try:
                     vardir_params.check_params()
-                except (Raster_Parameters_Errors), e:
-                    QMessageBox.critical(self.iface.mainWindow(), "Direction grid parameters", str(e))   
+                except (RasterParametersErrors) as e:
+                    QMessageBox.critical(self.iface.mainWindow(),
+                                         "Direction grid parameters",
+                                         str(e))
                     return
            
                 vardir_grid = create_grid(vardir_params, vardir_array) 
@@ -215,19 +242,13 @@ class DirectionalSlope:
                 try:
                     paired_vardir_grid = calculate_paired_values(dem_grid, vardir_grid)
                 except:
-                    QMessageBox.critical(
-					self.iface.mainWindow(), 
-					"Variable direction grid", 
-					"Unable to calculate paired_vardir_grid. Please report error to alberti.m65@gmail.com" 
-					)
-   
+                    QMessageBox.critical(self.iface.mainWindow(),
+                                        "Variable direction grid",
+                                        "Unable to calculate paired_vardir_grid" )
                     return 
 
-                
-            
             ## START OF SLOPE CALCULATIONS
-            
-            
+
             # output grid parameters
             
             output_grid_params = GDALParameters()
@@ -244,22 +265,19 @@ class DirectionalSlope:
             output_grid_params.set_rotationA(input_grid_params.get_rotationA())
             output_grid_params.set_rotationB(input_grid_params.get_rotationB())
            
-           
             # output file path and suffix
             
             output_path = os.path.join(str(output_folder), str(output_basename))
             output_suffix = ".asc"
-
 
             # general parameters
             
             directional_methods = ( maxslope_analysis, unifdir_analysis, vardir_analysis )
             analysis_values = ( dem_grid, unif_direction_values, paired_vardir_grid )
             output_parameters = ( output_grid_params, output_path, output_suffix )
-   
             
-            # Zevenbergen and Thorne (1987) method analysis 
-            
+            # Zevenbergen and Thorne (1987) method analysis
+
             if zt_method:
                 
                 method_string = "_ZT"
@@ -270,12 +288,12 @@ class DirectionalSlope:
 
                 try:
                     methods_calculation((dz_dy, dz_dx), directional_methods, analysis_values, output_parameters, method_string)
-                except (Slope_Errors, Output_Errors), e:
+                except (SlopeErrors, OutputErrors) as e:
                     QMessageBox.critical(self.iface.mainWindow(), "Calculation error", str(e))
                     return
 
+            # Horn (1981) method analysis
 
-            # Horn (1981) method analysis 
             if h_method:
                 
                 method_string = "_H"
@@ -286,19 +304,14 @@ class DirectionalSlope:
                 
                 try:
                     methods_calculation((dz_dy, dz_dx), directional_methods, analysis_values, output_parameters, method_string)
-                except (Slope_Errors, Output_Errors), e:
+                except (SlopeErrors, OutputErrors) as e:
                     QMessageBox.critical(self.iface.mainWindow(), "Calculation error", str(e))
                     return            
 
             # all done
-            QMessageBox.information(
-				self.iface.mainWindow(), 
-				"Module output", 
-				"Processings completed.\nResults saved in folder: "+str(output_folder)
-				)
 
-
-
-
+            QMessageBox.information(self.iface.mainWindow(),
+                                    "Module output",
+                                    "Processings completed.\nResults saved in folder: "+str(output_folder) )
 
 

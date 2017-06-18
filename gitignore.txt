@@ -103,3 +103,5 @@ ENV/
 
 # customized
 .directory
+*.pyc
+.idea/

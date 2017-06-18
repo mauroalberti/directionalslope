@@ -1,180 +1,162 @@
 # -*- coding: utf-8 -*-
 
 
-# Import PyQt libraries
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 
-# create the dialog 
-class DirectionalSlopeDialog( QDialog ):
+class DirectionalSlopeDialog(QDialog):
 
+    def __init__(self):
 
-    def __init__( self ):
-
-        super( DirectionalSlopeDialog, self ).__init__()
+        super(DirectionalSlopeDialog, self).__init__()
         
         self.initialize() 
                 
         self.setupUI()
 
+    def initialize(self):
 
-    def initialize( self ):
-
-        self.setWindowTitle( "DirectionalSlope" )
-               
+        self.setWindowTitle("DirectionalSlope")
     
-    def setupUI( self ):
+    def setupUI(self):
 
         self.tabs_layout = QVBoxLayout()
-        self.setLayout( self.tabs_layout )
+        self.setLayout(self.tabs_layout)
         
-        self.tabWidget = QTabWidget( )
-        self.tabs_layout.addWidget( self.tabWidget )        
+        self.tabWidget = QTabWidget()
+        self.tabs_layout.addWidget(self.tabWidget)        
         
         self.setupCalculationTab()
-        self.tabWidget.addTab( self.calc_tab, 'Directional slope' )
+        self.tabWidget.addTab(self.calc_tab, 'Directional slope')
         
         self.setupHelpTab()
-        self.tabWidget.addTab( self.help_tab, 'Help' )
+        self.tabWidget.addTab(self.help_tab, 'Help')
         
         self.setupAboutTab()
-        self.tabWidget.addTab( self.about_tab, 'About' )       
-
+        self.tabWidget.addTab(self.about_tab, 'About')
 
         self.tabWidget.setCurrentIndex(0)
 
-        self.btn_ok_cancel.accepted.connect( self.accept )
-        self.btn_ok_cancel.rejected.connect( self.reject )
+        self.btn_ok_cancel.accepted.connect(self.accept)
+        self.btn_ok_cancel.rejected.connect(self.reject)
 
         QMetaObject.connectSlotsByName(self)
 
         self.resize(565, 534)
-        
-        
 
     def setupCalculationTab(self):
         
         self.calc_tab = QWidget()        
         self.calc_layout = QVBoxLayout()
-        self.calc_tab.setLayout( self.calc_layout )        
+        self.calc_tab.setLayout(self.calc_layout)        
         
         self.setupInputDEM()
         self.setupMethods()        
         self.setupAnalysisTypes()
         self.setupResultFiles()     
         self.setupChoice()
-         
 
-            
-        
     def setupInputDEM(self):
 
         # input DEM group box
-        self.InputDEM_groupbox = QGroupBox( "Input DEM")
+        self.InputDEM_groupbox = QGroupBox("Input DEM")
         self.InputDEM_layout = QGridLayout()        
-        self.InputDEM_groupbox.setLayout( self.InputDEM_layout ) 
+        self.InputDEM_groupbox.setLayout(self.InputDEM_layout) 
 
-        self.InputDEM_layout.addWidget( QLabel(self.tr("DEM name")) , 0, 0, 1, 1  ) 
+        self.InputDEM_layout.addWidget(QLabel(self.tr("DEM name")) , 0, 0, 1, 1 ) 
         self.InputDem_combobox = QComboBox()
-        self.InputDEM_layout.addWidget( self.InputDem_combobox, 0, 1, 1, 3 )
+        self.InputDEM_layout.addWidget(self.InputDem_combobox, 0, 1, 1, 3)
         
-        self.calc_layout.addWidget( self.InputDEM_groupbox )
-        
+        self.calc_layout.addWidget(self.InputDEM_groupbox)
 
     def setupMethods(self):
                 
         # method group box
-        self.Methods_groupbox = QGroupBox( "Methods")
+        self.Methods_groupbox = QGroupBox("Methods")
         self.Methods_layout = QHBoxLayout()        
-        self.Methods_groupbox.setLayout( self.Methods_layout ) 
+        self.Methods_groupbox.setLayout(self.Methods_layout) 
         
         self.ZevenThornMeth_chbox = QCheckBox("Zevenbergen and Thorne (1987)")
 
         self.HornMeth_chbox = QCheckBox("Horn (1981)")
 
-        self.Methods_layout.addWidget( self.ZevenThornMeth_chbox )
-        self.Methods_layout.addWidget( self.HornMeth_chbox )
+        self.Methods_layout.addWidget(self.ZevenThornMeth_chbox)
+        self.Methods_layout.addWidget(self.HornMeth_chbox)
 
-        self.calc_layout.addWidget( self.Methods_groupbox )
-        
+        self.calc_layout.addWidget(self.Methods_groupbox)
 
     def setupAnalysisTypes(self):
         
         # method group box
-        self.AnalysisTypes_groupbox = QGroupBox( "Slope analysis types" )
+        self.AnalysisTypes_groupbox = QGroupBox("Slope analysis types")
         self.AnalysisTypes_layout = QGridLayout() 
-        self.AnalysisTypes_groupbox.setLayout( self.AnalysisTypes_layout )
+        self.AnalysisTypes_groupbox.setLayout(self.AnalysisTypes_layout)
 
-        self.UniformDirection_chbox = QCheckBox( "Sl. along uniform directions" )
-        self.AnalysisTypes_layout.addWidget( self.UniformDirection_chbox , 0, 0)       
+        self.UniformDirection_chbox = QCheckBox("Sl. along uniform directions")
+        self.AnalysisTypes_layout.addWidget(self.UniformDirection_chbox , 0, 0)       
        
         self.UniformDirection_value = QLineEdit(self.AnalysisTypes_groupbox)
         self.UniformDirection_value.setPlaceholderText("e.g., 90; 170/180; 250/290/5")        
-        self.AnalysisTypes_layout.addWidget( self.UniformDirection_value , 0, 1)
+        self.AnalysisTypes_layout.addWidget(self.UniformDirection_value , 0, 1)
 
 
-        self.VariableOrientations_chbox = QCheckBox( "Sl. along directions defined in grid " )
-        self.AnalysisTypes_layout.addWidget( self.VariableOrientations_chbox , 1, 0)
+        self.VariableOrientations_chbox = QCheckBox("Sl. along directions defined in grid ")
+        self.AnalysisTypes_layout.addWidget(self.VariableOrientations_chbox , 1, 0)
         
         self.VariableOrientations_raster_cb = QComboBox()
-        self.AnalysisTypes_layout.addWidget( self.VariableOrientations_raster_cb , 1, 1)        
+        self.AnalysisTypes_layout.addWidget(self.VariableOrientations_raster_cb , 1, 1)        
 
-        self.MaximumSlope_chbox = QCheckBox( "Maximum sl." )
-        self.AnalysisTypes_layout.addWidget( self.MaximumSlope_chbox , 2, 0)        
+        self.MaximumSlope_chbox = QCheckBox("Maximum sl.")
+        self.AnalysisTypes_layout.addWidget(self.MaximumSlope_chbox , 2, 0)        
 
-        self.calc_layout.addWidget( self.AnalysisTypes_groupbox )
- 
+        self.calc_layout.addWidget(self.AnalysisTypes_groupbox)
 
     def setsaveDirectory(self):
         
-        dirName = QFileDialog.getExistingDirectory( self, 
-                                                      self.tr("Select save directory"),
-                                                      QDir.currentPath(), 
-                                                      QFileDialog.ShowDirsOnly|
-                                                      QFileDialog.ReadOnly )
+        dirName = QFileDialog.getExistingDirectory(self, 
+                                                  self.tr("Select save directory"),
+                                                  QDir.currentPath(),
+                                                  QFileDialog.ShowDirsOnly|
+                                                  QFileDialog.ReadOnly)
         
         if not dirName: 
             return
                 
-        self.ResultFolder_linedit.setText( dirName )
-              
+        self.ResultFolder_linedit.setText(dirName)
          
     def setupResultFiles(self):
 
-        self.Results_groupbox = QGroupBox( "Output rasters" )
+        self.Results_groupbox = QGroupBox("Output rasters")
         self.Results_layout = QGridLayout() 
-        self.Results_groupbox.setLayout( self.Results_layout )        
+        self.Results_groupbox.setLayout(self.Results_layout)        
  
-        self.Results_layout.addWidget( QLabel(self.tr("Save results in folder")) , 0, 0)
+        self.Results_layout.addWidget(QLabel(self.tr("Save results in folder")) , 0, 0)
          
         self.ResultFolder_linedit = QLineEdit()
-        self.Results_layout.addWidget( self.ResultFolder_linedit , 0, 1)
+        self.Results_layout.addWidget(self.ResultFolder_linedit , 0, 1)
         
         self.ResultFolder_QPushButton = QPushButton(self.tr("Choose directory"))
-        self.Results_layout.addWidget( self.ResultFolder_QPushButton , 0, 2)
+        self.Results_layout.addWidget(self.ResultFolder_QPushButton , 0, 2)
         
-        self.ResultFolder_QPushButton.clicked.connect( self.setsaveDirectory )
+        self.ResultFolder_QPushButton.clicked.connect(self.setsaveDirectory)
  
-        self.Results_layout.addWidget( QLabel(self.tr("Result file basename")), 1, 0)
+        self.Results_layout.addWidget(QLabel(self.tr("Result file basename")), 1, 0)
                         
         self.ResultBasename_linedit = QLineEdit()
         self.ResultBasename_linedit.setPlaceholderText("e.g., slope01")
-        self.Results_layout.addWidget( self.ResultBasename_linedit, 1, 1, 1, 2)
+        self.Results_layout.addWidget(self.ResultBasename_linedit, 1, 1, 1, 2)
                 
-        self.calc_layout.addWidget( self.Results_groupbox )
- 
+        self.calc_layout.addWidget(self.Results_groupbox)
 
-    def setupChoice(self):        
+    def setupChoice(self):
 
         self.btn_ok_cancel = QDialogButtonBox(self.calc_tab)
         self.btn_ok_cancel.setOrientation(Qt.Horizontal)
         self.btn_ok_cancel.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
         
-        self.calc_layout.addWidget( self.btn_ok_cancel )
-                
-        
- 
+        self.calc_layout.addWidget(self.btn_ok_cancel)
+
     def setupHelpTab(self):
 
         help_html = """
@@ -190,7 +172,7 @@ class DirectionalSlopeDialog( QDialog ):
         </p>
         <h3>Methods</h3>
         <p>
-                The methods used to estimate the slope value are two: Zevenbergen &amp; Thorne (1987), and Horn (1981). 
+                The methods used to estimate the slope value are two: Horn (1981) and Zevenbergen &amp; Thorne (1987).
                 The former is best suited for rough surfaces, while the latter performs better for smooth surfaces (Jones, 1997, cited in Burrough &amp; McDonnell, 1998).
         </p>
         <p>
@@ -248,28 +230,23 @@ class DirectionalSlopeDialog( QDialog ):
         </body></hmtl>
         """
 
-        self.help_tab = QWidget( )
+        self.help_tab = QWidget()
         self.help_layout = QVBoxLayout()
-        self.help_tab.setLayout( self.help_layout ) 
+        self.help_tab.setLayout(self.help_layout) 
 
         self.help_textBrwsr = QTextBrowser(self.help_tab)
 
-        self.help_textBrwsr.setHtml( help_html )
+        self.help_textBrwsr.setHtml(help_html)
 
+        self.help_layout.addWidget(self.help_textBrwsr)
 
-        self.help_layout.addWidget( self.help_textBrwsr )
-        
-        
- 
     def setupAboutTab(self):       
 
-        self.about_tab = QWidget( )
+        self.about_tab = QWidget()
         self.about_layout = QVBoxLayout()
-        self.about_tab.setLayout( self.about_layout ) 
-        
+        self.about_tab.setLayout(self.about_layout)
         
         self.about_textBrwsr = QTextBrowser(self.about_tab)
-        
 
         self.about_textBrwsr.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -281,17 +258,9 @@ class DirectionalSlopeDialog( QDialog ):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span> Created by Mauro Alberti - </span><a href=\"mailto:alberti.m65@gmail.com\"><span style=\" text-decoration: underline; color:#0000ff;\">alberti.m65@gmail.com</span></a></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span> License: GPL vers. 3.</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span>See </span><a href=\"http://www.malg.eu/\"><span style=\" text-decoration: underline; color:#0000ff;\">www.malg.eu</span></a><span> for updates.</span></p></body></html>" )
-
-
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span>See </span><a href=\"http://www.malg.eu/\"><span style=\" text-decoration: underline; color:#0000ff;\">www.malg.eu</span></a><span> for updates.</span></p></body></html>")
 
         self.about_textBrwsr.setOpenExternalLinks(True)
         
-        self.about_layout.addWidget( self.about_textBrwsr )
+        self.about_layout.addWidget(self.about_textBrwsr)
  
-
-
-
- 
-
-
