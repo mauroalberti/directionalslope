@@ -122,9 +122,9 @@ The output files are saved in the folder defined by the user, with the name of e
 
 [Note: the sign convention for slope followed in this example refers to the previous versions of the module, inverted with respect to the current one.]
 
-The case study is an example of spatially-changing directional slope analsys.
+The case study is an example of spatially-changing directional slope analysis. The used data, referring to ice flows, derives from a PhD thesis by Debbie Biscaro and are available in the *example_data/reeves_groundingzone* folder in this repository.
 
-We derive the directional slope of a glacial surface along the ice flow directions for the Reeves Glacier (Victoria Land, East Antarctica). The ice flow data derives from a PhD thesis by D. Biscaro and are available at *example_data/reeves_groundingzone* in this repository.
+We derive the directional slope of a glacial surface along the ice flow directions for the Reeves Glacier (Victoria Land, East Antarctica). 
 
 ![alt text](/ims/reeves_fluxes.png "Glacial fluxes in the grounding zone of the Reeves Glacier (Antarctica)")
 
