@@ -13,50 +13,6 @@ This algorithm calculates the slope of a surface, both directional and steepest.
 
 *Fig. 1. DirectionaSlope plugin interface.*
 
-## Input
-
-Required input data is the DEM, the source for the slope calculation. It must be projected (i.e., not in Long-Lat coordinates). The unit for vertical distances has to be the same as for the horizontal ones.
-
-For uniform direction analysis, the user can provide direction values in three ways:
- 
- a) a single value (in degrees), e.g. 300;
- 
- b) two values (start and stop), separated by a forward slash, e.g. 80/90: the slopes will be calculated for the range comprised between start and stop values, with a step of 1° (if start is less than stop) or -1° (if stop is less than start);
- 
- c) three values, separated by a forward slash, e.g., 0/350/10: they correspond to start, stop and step values. A set of slopes will be automatically calculated with the given range and with the provided step. Each result file will have a suffix in its name describing the specific direction value.
-
-For variable orientation analysis, a grid storing the directions in decimal degrees is required. Its geographical extent and cell size of the direction grid may be different from those of the DEM. 
-
-
-## Output
-
-The output consists of one or more grids, in ESRI ascii format, with the same geographical parameters (i.e., cell resolution, lower-left corner) as the input DEM, and slope values expressed in decimal degrees, positive for downwards orientations, and negative for upwards orientations (the opposite with respect to the previous versions). Maximum slope is obviously always positive.
-
-
-The output files are saved in the folder defined by the user, with the name of each file will be made up by the basename and a suffix related to the specific calculation parameters (both used slope method and analysis type parameters):
-
-#### Slope methods
-
-  'ZT': Zevenbergen & Thorne (1987)
-  
-  'H': Horn (1981)
-  
-  
-#### Analysis types
-
-  'm': maximum slope
-  
-  'ud': uniform directions, followed by the specific angle value
-  
-  'vd': variable directions
-
-
-## Examples
-
-  'slope01_H_ud_180.0.asc': 'slope01' is the basename, 'H' means Horn (1981) method, 'ud' is the uniform directions option, with a value of 180.0 degrees.
-  
-  'result_ZT_vd.asc': 'result' is the basename, 'ZT' means Zevenbergen & Thorne (1987) method, 'vd' is the variable directions option. 
-  
 
 ## Methodology
 
@@ -80,7 +36,6 @@ Two methods are available in the module: the Zevenbergen & Thorne (1987) and the
 
 
 ### Zevenbergen & Thorne (1987) method
-
 
 Gradients along the two axes are:
 
@@ -111,6 +66,57 @@ Formulas of the gradients are (Burrough & McDonnell, 1998, eqs. 8.9 and 8.10):
 *Fig. 4. Horn (1981) method.*
 
 
+## Data processing
+
+### Input
+
+Required input data is the DEM, the source for the slope calculation. It must be projected (i.e., not in Long-Lat coordinates). The unit for vertical distances has to be the same as for the horizontal ones.
+
+#### Uniform direction
+
+For uniform direction analysis, the user can provide direction values in three ways:
+ 
+ a) a single value (in degrees), e.g. 300;
+ 
+ b) two values (start and stop), separated by a forward slash, e.g. 80/90: the slopes will be calculated for the range comprised between start and stop values, with a step of 1° (if start is less than stop) or -1° (if stop is less than start);
+ 
+ c) three values, separated by a forward slash, e.g., 0/350/10: they correspond to start, stop and step values. A set of slopes will be automatically calculated with the given range and with the provided step. Each result file will have a suffix in its name describing the specific direction value.
+
+#### Spatially-changing directions
+
+For variable orientation analysis, a grid where each cell stores a specific direction (in decimal degrees) is required. Its geographical extent and cell size of the direction grid may be different from those of the DEM. 
+
+
+### Output
+
+The output consists of one or more grids, in ESRI ascii format, with the same geographical parameters (i.e., cell resolution, lower-left corner) as the input DEM, and slope values expressed in decimal degrees, positive for downwards orientations, and negative for upwards orientations (the opposite with respect to the previous versions). Maximum slope is obviously always positive.
+
+
+The output files are saved in the folder defined by the user, with the name of each file will be made up by the basename and a suffix related to the specific calculation parameters (both used slope method and analysis type parameters):
+
+#### Slope methods
+
+  'ZT': Zevenbergen & Thorne (1987)
+  
+  'H': Horn (1981)
+  
+  
+#### Analysis types
+
+  'm': maximum slope
+  
+  'ud': uniform directions, followed by the specific angle value
+  
+  'vd': variable directions
+
+
+### Examples
+
+  'slope01_H_ud_180.0.asc': 'slope01' is the basename, 'H' means Horn (1981) method, 'ud' is the uniform directions option, with a value of 180.0 degrees.
+  
+  'result_ZT_vd.asc': 'result' is the basename, 'ZT' means Zevenbergen & Thorne (1987) method, 'vd' is the variable directions option. 
+  
+  
 ## Case study
 
 Note: the sign convention for slope followed in this example refers to the previous versions of the module, inverted with respect to the current one.
