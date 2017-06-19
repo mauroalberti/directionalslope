@@ -9,10 +9,6 @@ The slope of a topographic surface is usually calculated as the maximum gradient
 
 This algorithm calculates the slope of a surface, both directional and steepest. Directions may be uniform or variable in space. 
 
-![alt text](/ims/directionalslope_gui.png "DirectionaSlope plugin interface")
-
-*Fig. 1. DirectionaSlope plugin interface.*
-
 
 ## Methodology
 
@@ -20,7 +16,7 @@ The estimation of the directional slope for surfaces sampled along grids relies 
 
 ![alt text](/ims/matrix-grid_small.jpg "Kernel for slope calculation")
 
-*Fig. 2. 3x3 kernel for slope calculation.*
+*Fig. 1. 3x3 kernel for slope calculation.*
 
 
 To determine the directional slope, we must first calculate the directional gradients along the two principal axes, x and y. From the values of dz / dx and dz / dy, one can determine the slope of the plane that approximates the surface at the local cell (i, j) using the formula (Neteler & Mitasova, 2008, eq. A.27; see also Geospatial Analysis - a comprehensive guide):
@@ -47,7 +43,7 @@ In the case of cells at the grid edge, this method can be replaced by the first 
 
 ![alt text](/ims/simple_1off_small.jpg "Zevenbergen & Thorne (1987) method")
 
-*Fig. 3. Zevenbergen & Thorne (1987) method.*
+*Fig. 2. Zevenbergen & Thorne (1987) method.*
 
 ### Horn (1981) method
 
@@ -63,7 +59,7 @@ Formulas of the gradients are (Burrough & McDonnell, 1998, eqs. 8.9 and 8.10):
    
 ![alt text](/ims/horn_small.jpg "Horn (1981) method")
 
-*Fig. 4. Horn (1981) method.*
+*Fig. 3. Horn (1981) method.*
 
 
 ## Data processing
@@ -72,7 +68,12 @@ Formulas of the gradients are (Burrough & McDonnell, 1998, eqs. 8.9 and 8.10):
 
 Required input data is the DEM, the source for the slope calculation. It must be projected (i.e., not in Long-Lat coordinates). The unit for vertical distances has to be the same as for the horizontal ones.
 
-#### Uniform direction
+![alt text](/ims/directionalslope_gui.png "DirectionaSlope plugin interface")
+
+*Fig. 4. DirectionaSlope plugin interface.*
+
+
+#### Spatially-uniform direction
 
 For uniform direction analysis, the user can provide direction values in three ways:
  
@@ -119,9 +120,11 @@ The output files are saved in the folder defined by the user, with the name of e
   
 ## Case study
 
-Note: the sign convention for slope followed in this example refers to the previous versions of the module, inverted with respect to the current one.
+[Note: the sign convention for slope followed in this example refers to the previous versions of the module, inverted with respect to the current one.]
 
-We derive the directional slope of a glacial surface along the ice flow directions for the Reeves Glacier (Victoria Land, East Antarctica). The ice flow data derives from a PhD thesis by D. Biscaro. 
+The case study is an example of spatially-changing directional slope analsys.
+
+We derive the directional slope of a glacial surface along the ice flow directions for the Reeves Glacier (Victoria Land, East Antarctica). The ice flow data derives from a PhD thesis by D. Biscaro and are available at *example_data/reeves_groundingzone* in this repository.
 
 ![alt text](/ims/reeves_fluxes.png "Glacial fluxes in the grounding zone of the Reeves Glacier (Antarctica)")
 
