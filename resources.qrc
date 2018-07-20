@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/plugins/DirectionalSlope" >
-        <file>icon.png</file>
+        <file>icons/icon.png</file>
     </qresource>
 </RCC>

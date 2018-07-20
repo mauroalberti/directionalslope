@@ -1,5 +1,9 @@
 
 
+from builtins import str
+from builtins import range
+from builtins import object
+
 import os
 from math import *
 import numpy as np
@@ -8,7 +12,7 @@ from gdalconst import *
 
 
 # 2D Array coordinates 
-class ArrCoord:
+class ArrCoord(object):
 
     def __init__(self, ival, jval):
         self.i = ival
@@ -25,7 +29,7 @@ class ArrCoord:
         return self.j
 
 
-class Point:
+class Point(object):
     """3D point class"""
 
     def __init__(self, x, y, z=0.0):
@@ -44,7 +48,7 @@ class Point:
         return Point( self.x + sx , self.y + sy)
 
 
-class GDALParameters:
+class GDALParameters(object):
     """GDAL raster parameters"""
 
     def __init__(self): 
@@ -218,7 +222,7 @@ class SlopeErrors(Exception):
     pass
     
 
-class SpatialDomain:
+class SpatialDomain(object):
     """Rectangular spatial domain class"""
 
     def __init__(self, pt_init, pt_end):
@@ -257,7 +261,7 @@ class SpatialDomain:
         return self.get_xrange()*self.get_yrange()
 
 
-class Grid:
+class Grid(object):
 
     def __init__(self):
         
@@ -604,8 +608,8 @@ def calculate_paired_values(dem_grid, vardir_grid):
 
     paired_values = np.zeros((dem_grid.get_ylines_num()-2, dem_grid.get_xlines_num()-2))*np.NaN
     
-    for i in xrange(paired_values.shape[0]):
-        for j in xrange(paired_values.shape[1]): 
+    for i in range(paired_values.shape[0]):
+        for j in range(paired_values.shape[1]): 
             
             # offset between grid dem cell corner and paired_values cell center, in grid coordinates
             offset_dem_array = 1.5

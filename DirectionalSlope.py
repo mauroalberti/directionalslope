@@ -6,7 +6,7 @@
                               -------------------
         begin                : 2011-10-25
         version              : 2017-06-18 (1.2.1), QGIS 2.0 compatible
-        copyright            : (C) 2011-2017 by Mauro Alberti - www.malg.eu
+        copyright            : (C) 2011-2018 by Mauro Alberti
         email                : alberti.m65@gmail.com
  ***************************************************************************/
 
@@ -20,18 +20,25 @@
  ***************************************************************************/
 """
 
+from __future__ import absolute_import
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+
+from builtins import str
+from builtins import object
+
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
+
 from qgis.core import *
 
-import resources
+from . import resources
 
 from .DirectionalSlope_dialog import DirectionalSlopeDialog
 from .DirectionalSlope_classes import *
 
 
-class DirectionalSlope:
+class DirectionalSlope(object):
 
     
     def __init__(self, iface):
@@ -73,9 +80,9 @@ class DirectionalSlope:
 
         # append loaded raster layers to combo boxes
 
-        self.layermap = QgsMapLayerRegistry.instance().mapLayers() 
+        self.layermap = QgsProject.instance().mapLayers()
 
-        for (name,layer) in self.layermap.iteritems():
+        for (name,layer) in list(self.layermap.items()):
             if layer.type() == QgsMapLayer.RasterLayer: 
                 dlg.InputDem_combobox.addItem(layer.name())		
                 dlg.VariableOrientations_raster_cb.addItem(layer.name())               
@@ -150,7 +157,7 @@ class DirectionalSlope:
             # define Input DEM file
 
             dem_layer = None
-            for (name,layer) in self.layermap.iteritems():
+            for (name,layer) in list(self.layermap.items()):
                 if layer.name() == dem_name:       
                     dem_layer = layer
                     break
@@ -215,7 +222,7 @@ class DirectionalSlope:
                                          "Variable directional analysis",
                                          "No raster provided")
                     return                   
-                for (name,layer) in self.layermap.iteritems():
+                for (name,layer) in list(self.layermap.items()):
                     if layer.name() == vardirectgrid_name:       
                         vardirectgrid_layer = layer
                         break
