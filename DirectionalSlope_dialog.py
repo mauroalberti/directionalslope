@@ -255,11 +255,11 @@ class DirectionalSlopeDialog(QDialog):
 "</style></head><body style=\" font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Directional Slope </span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span> Vers. 1.3 - July, 20, 2018.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span> Vers. 1.3.1 - August, 7, 2018.</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span> Created by Mauro Alberti - </span><a href=\"mailto:alberti.m65@gmail.com\"><span style=\" text-decoration: underline; color:#0000ff;\">alberti.m65@gmail.com</span></a></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span> License: GPL vers. 3.</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span>See </span><a href=\"http://www.malg.eu/\"><span style=\" text-decoration: underline; color:#0000ff;\">www.malg.eu</span></a><span> for updates.</span></p></body></html>")
+"</body></html>")
 
         self.about_textBrwsr.setOpenExternalLinks(True)
         
